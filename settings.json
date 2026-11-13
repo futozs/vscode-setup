@@ -242,7 +242,9 @@
   "js/ts.tsc.autoDetect": "off",
   "workbench.browser.openLocalhostLinks": false,
   "workbench.settings.editor": "json",
-  "security.workspace.trust.untrustedFiles": "newWindow",
+  // Own machine, own repos: no Restricted Mode prompt per folder. Tasks and extensions run in
+  // every folder without asking, so be careful when opening repos you have not read.
+  "security.workspace.trust.enabled": false,
   "redhat.telemetry.enabled": false,
   "chat.viewSessions.enabled": false,
   "chat.contextUsage.enabled": false
