@@ -232,7 +232,6 @@
   "terminal.integrated.enablePersistentSessions": true,
   "terminal.integrated.smoothScrolling": true,
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.macOptionIsMeta": true,
   // ---------- Quiet + fast ----------
   "telemetry.telemetryLevel": "off",
   "update.showReleaseNotes": false,
