@@ -103,6 +103,7 @@ A kód nem a Documentsben van (azt a macOS iCloud-szinkronizálhatja, és a Spot
 ## Kapcsolódó
 
 - [claude-setup](https://github.com/futozs/claude-setup): a Claude Code konfigurációm
+- [dotfiles](https://github.com/futozs/dotfiles): a teljes Mac setup (appok, shell, terminál, git), ez a repó is innen települ
 
 ## Licenc
 
