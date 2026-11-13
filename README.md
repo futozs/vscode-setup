@@ -17,7 +17,7 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 
 ## Filozófia
 
-1. **Minden bővítmény lassít.** Csak az kerül be, ami a napi munkában tényleg dolgozik. Amit a VS Code már magától tud, az nem kell: az auto rename tag helyett ott a `linkedEditing`, az indent-rainbow helyett a bracket pair guide-ok, a GitLens helyett a beépített git blame és a Source Control gráf, a Project Manager helyett a `Ctrl+R` és a `pc` parancs.
+1. **Minden bővítmény lassít.** Csak az kerül be, ami a napi munkában tényleg dolgozik, vagy csak akkor töltődik be, amikor megnyitod a hozzá tartozó fájlt (PDF, SVG, CSV). Amit a VS Code már magától tud, az nem kell: az auto rename tag helyett ott a `linkedEditing`, az indent-rainbow helyett a bracket pair guide-ok, a GitLens helyett a beépített git blame és a Source Control gráf. A Project Managert egy saját, 200 soros bővítmény váltja ki (lent).
 2. **Egy asszisztens, akivel beszélsz.** A VS Code-ba épített Copilotból csak az marad, ami gépelés közben segít: a szürke kódkiegészítés és a next edit javaslat. A Copilot chatje, az agent mód és a címsorban lévő agent-gomb ki van kapcsolva. Beszélgetni, tervezni és nagyobb változtatást végezni a Claude Code-dal lehet.
 3. **A watcher a szűk keresztmetszet.** Nagy JS repóknál a fájlfigyelő eszi a CPU-t. A `node_modules`, a `.next`, a build mappák és a `.claude/worktrees` ki vannak zárva a figyelésből és a keresésből.
 4. **A projekt dönt a formázásról.** A Prettier csak akkor formáz, ha a repóban van Prettier config (`prettier.requireConfig`). Így egy csapatrepóban nem formázod át mások fájljait.
@@ -30,7 +30,8 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | `settings.json` | Téma, betűk, layout, formázás, fájlfigyelés, TS 7, git, terminál. A nem magától értetődő sorok mellett megjegyzés áll. |
 | `keybindings.json` | Kevés, de használt billentyű (lent). |
 | `extensions/core.txt` | Az alap profil bővítményei. |
-| `extensions/php.txt`, `android.txt` | Extra profilok: `./install.sh --profiles php,android`. A beállításokat és a billentyűket az alap profillal közösen használják. |
+| `extensions/php.txt`, `android.txt`, `csharp.txt` | Extra profilok: `./install.sh --profiles php,android,csharp`. A beállításokat és a billentyűket az alap profillal közösen használják. Egy mappához egyszer hozzárendelve (`code --profile "C#" <mappa>`) onnantól magától abban a profilban nyílik. |
+| `projects-extension/` | A saját Projects bővítmény forrása. Az installer minden futáskor újraépíti és telepíti. |
 | `shell/dev.zsh` | `p`, `pc`, `c` parancsok és zoxide. Az installer a `~/.zshrc`-ből hivatkozik rá. |
 
 ### Bővítmények
@@ -44,7 +45,19 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | Stack | Tailwind CSS IntelliSense (`cn()`, `cva()`, `clsx()` támogatással), Prisma, Bun, Vue (Nuxt), YAML, TOML, dotenv |
 | Hibák | Error Lens (a hiba a sor végén jelenik meg), Pretty TypeScript Errors |
 | Tesztek | Vitest, Playwright |
-| CI | GitHub Actions |
+| CI, konténerek | GitHub Actions, Container Tools (Dockerfile, compose) |
+| Nézegetők | PDF, SVG (előnézet és szerkesztés), Draw.io, Rainbow CSV |
+| Projektek | Projects (saját, lent) |
+
+### Projects
+
+A Project Manager helyett. Nem a Marketplace-ről jön, hanem a `projects-extension/` mappából: két fájl, függőség nélkül.
+
+- **Mappa ikon a felső ikonsorban:** kilistázza a `~/Developer` összes projektjét kategóriánként (Clients, Personal, School, Sandbox, Archive). A több repós ügyfelek (pl. `clients/kranem/`) külön csoportba kerülnek. Minden projekt mellett ott az aktuális git branch, a nyitott projekt zölden látszik.
+- **Kattintás:** megnyitja ugyanebben az ablakban. A sor végén lévő ikonnal új ablakban nyílik. Jobb klikkre: Reveal in Finder, Copy Path.
+- **Az állapotsor bal szélén** mindig ott az aktuális projekt neve. Rákattintva, vagy `Alt+Cmd+P`-vel fuzzy kereső nyílik az összes projekt között.
+- **Projektnek számít** minden mappa, amiben van `.git`, `package.json`, `composer.json`, `Cargo.toml`, `pyproject.toml` vagy `go.mod`. Az új projektek maguktól megjelennek, amikor visszaváltasz az ablakra.
+- **A gyökérmappa** a `devProjects.root` beállítással változtatható.
 
 ### Layout
 
@@ -59,6 +72,7 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | Billentyű | Mit csinál |
 |---|---|
 | `Cmd+Esc` | Claude Code fókusz (a bővítmény alapértelmezése) |
+| `Alt+Cmd+P` | Projektváltó (az összes projekt a `~/Developer`-ben) |
 | `Ctrl+R` / `Alt+Cmd+O` | Legutóbbi projektek |
 | `Shift+Cmd+R` | Ablak újratöltése, ha egy bővítmény beakad |
 | `Alt+Cmd+W` | A többi fül bezárása |

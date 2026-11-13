@@ -1,0 +1,4 @@
+# "C#" profile: .NET console/desktop projects. Heavy language server, so it lives in its own profile.
+ms-dotnettools.csharp
+ms-dotnettools.csdevkit
+ms-dotnettools.vscode-dotnet-runtime

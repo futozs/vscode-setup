@@ -99,14 +99,25 @@ link keybindings.json "$USER_DIR/keybindings.json"
 
 read_list() { grep -v '^\s*#' "$REPO/extensions/$1.txt" | grep -v '^\s*$' | tr '[:upper:]' '[:lower:]'; }
 
+# The Projects sidebar is not on the Marketplace: build it from source on every run.
+LOCAL_EXT="futozs.dev-projects"
+LOCAL_VSIX="$(mktemp -d)/dev-projects.vsix"
+say "Building the Projects extension"
+(cd "$REPO/projects-extension" && npx --yes @vscode/vsce@4.1.1 package --no-dependencies -o "$LOCAL_VSIX" >/dev/null 2>&1) \
+  && echo "   built $(basename "$LOCAL_VSIX")" || warn "could not build projects-extension (needs node)"
+
 sync_extensions() { # sync_extensions <profile-or-empty> <list...>
   local profile="$1"; shift
   local want; want="$(for l in "$@"; do read_list "$l"; done | sort -u)"
   local args=(); [ -n "$profile" ] && args=(--profile "$profile")
   local have; have="$("$CODE" ${args[@]+"${args[@]}"} --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u)"
   for ext in $(comm -13 <(echo "$have") <(echo "$want")); do
+    [ "$ext" = "$LOCAL_EXT" ] && continue
     "$CODE" ${args[@]+"${args[@]}"} --install-extension "$ext" --force >/dev/null && echo "   + $ext" || warn "failed: $ext"
   done
+  if [ -f "$LOCAL_VSIX" ] && echo "$want" | grep -qx "$LOCAL_EXT"; then
+    "$CODE" ${args[@]+"${args[@]}"} --install-extension "$LOCAL_VSIX" --force >/dev/null 2>&1 || warn "failed: $LOCAL_EXT"
+  fi
   for ext in $(comm -23 <(echo "$have") <(echo "$want")); do
     "$CODE" ${args[@]+"${args[@]}"} --uninstall-extension "$ext" >/dev/null && echo "   - $ext" || warn "could not remove: $ext"
   done
@@ -118,13 +129,24 @@ sync_extensions "" core
 if [ -n "$PROFILES" ]; then
   # The CLI can't create profiles, so register them in VS Code's state file. Each one shares the
   # Default profile's settings, keybindings, snippets, tasks and MCP config; only extensions differ.
-  if vscode_running; then echo "Quit VS Code first (Cmd+Q) to create profiles, then re-run."; exit 1; fi
   names=()
   for p in ${PROFILES//,/ }; do
     [ -f "$REPO/extensions/$p.txt" ] || { warn "no extensions/$p.txt, skipping"; continue; }
     names+=("$(sed -n '1s/^# "\([^"]*\)".*/\1/p' "$REPO/extensions/$p.txt")")
   done
-  python3 - "$USER_DIR" "${names[@]}" <<'PY'
+  # VS Code rewrites storage.json on exit, so new profiles can only be registered while it is closed.
+  missing="$(python3 - "$USER_DIR" "${names[@]}" <<'PY'
+import json, os, sys
+user_dir, names = sys.argv[1], sys.argv[2:]
+path = os.path.join(user_dir, "globalStorage", "storage.json")
+data = json.load(open(path)) if os.path.exists(path) else {}
+have = {p["name"] for p in data.get("userDataProfiles", [])}
+print(" ".join(n for n in names if n not in have))
+PY
+)"
+  if [ -n "$missing" ]; then
+    if vscode_running; then echo "Quit VS Code first (Cmd+Q) to create profile(s): $missing. Then re-run."; exit 1; fi
+    python3 - "$USER_DIR" "${names[@]}" <<'PY'
 import json, os, sys, uuid
 user_dir, names = sys.argv[1], sys.argv[2:]
 path = os.path.join(user_dir, "globalStorage", "storage.json")
@@ -141,6 +163,7 @@ for name in names:
     os.makedirs(os.path.join(user_dir, "profiles", prof["location"]), exist_ok=True)
 json.dump(data, open(path, "w"), indent=2)
 PY
+  fi
   for p in ${PROFILES//,/ }; do
     [ -f "$REPO/extensions/$p.txt" ] || continue
     name="$(sed -n '1s/^# "\([^"]*\)".*/\1/p' "$REPO/extensions/$p.txt")"

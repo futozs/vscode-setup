@@ -1,0 +1,83 @@
+{
+  "name": "dev-projects",
+  "displayName": "Projects",
+  "description": "Lists every project under ~/Developer in the activity bar and opens it with one click.",
+  "version": "1.1.0",
+  "publisher": "futozs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futozs/vscode-setup"
+  },
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": ["Other"],
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "extensionKind": ["ui"],
+  "contributes": {
+    "configuration": {
+      "title": "Projects",
+      "properties": {
+        "devProjects.root": {
+          "type": "string",
+          "default": "~/Developer",
+          "description": "Folder that holds your projects, one level of categories deep (e.g. ~/Developer/clients/<project>)."
+        },
+        "devProjects.collapsed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["archive"],
+          "description": "Category folders that start collapsed."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "devProjects",
+          "title": "Projects",
+          "icon": "media/folder.svg"
+        }
+      ]
+    },
+    "views": {
+      "devProjects": [
+        {
+          "id": "devProjects.list",
+          "name": "Projects"
+        }
+      ]
+    },
+    "commands": [
+      { "command": "devProjects.pick", "title": "Switch Project", "category": "Projects", "icon": "$(search)" },
+      { "command": "devProjects.refresh", "title": "Refresh", "category": "Projects", "icon": "$(refresh)" },
+      { "command": "devProjects.open", "title": "Open", "category": "Projects" },
+      { "command": "devProjects.openNewWindow", "title": "Open in New Window", "category": "Projects", "icon": "$(empty-window)" },
+      { "command": "devProjects.reveal", "title": "Reveal in Finder", "category": "Projects" },
+      { "command": "devProjects.copyPath", "title": "Copy Path", "category": "Projects" }
+    ],
+    "menus": {
+      "view/title": [
+        { "command": "devProjects.pick", "when": "view == devProjects.list", "group": "navigation@1" },
+        { "command": "devProjects.refresh", "when": "view == devProjects.list", "group": "navigation@2" }
+      ],
+      "view/item/context": [
+        { "command": "devProjects.openNewWindow", "when": "view == devProjects.list && viewItem =~ /^project/", "group": "inline" },
+        { "command": "devProjects.openNewWindow", "when": "view == devProjects.list && viewItem =~ /^project/", "group": "1_open@1" },
+        { "command": "devProjects.reveal", "when": "view == devProjects.list && viewItem =~ /^project/", "group": "2_path@1" },
+        { "command": "devProjects.copyPath", "when": "view == devProjects.list && viewItem =~ /^project/", "group": "2_path@2" }
+      ],
+      "commandPalette": [
+        { "command": "devProjects.open", "when": "false" },
+        { "command": "devProjects.openNewWindow", "when": "false" },
+        { "command": "devProjects.reveal", "when": "false" },
+        { "command": "devProjects.copyPath", "when": "false" }
+      ]
+    },
+    "keybindings": [
+      { "command": "devProjects.pick", "key": "alt+cmd+p", "mac": "alt+cmd+p" }
+    ]
+  }
+}

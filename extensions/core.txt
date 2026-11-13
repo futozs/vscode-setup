@@ -28,5 +28,15 @@ yoavbls.pretty-ts-errors
 vitest.explorer
 ms-playwright.playwright
 
-# CI
+# CI, containers
 github.vscode-github-actions
+ms-azuretools.vscode-containers
+
+# Viewers (load only when you open that file type)
+tomoki1207.pdf
+jock.svg
+hediet.vscode-drawio
+mechatroner.rainbow-csv
+
+# Local: built from ./projects-extension by install.sh
+futozs.dev-projects
