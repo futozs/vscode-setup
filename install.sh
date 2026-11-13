@@ -4,14 +4,14 @@
 #   ./install.sh --fresh             back up everything, uninstall VS Code + all data, reinstall clean, then install
 #   ./install.sh --profiles php,android
 #                                    also create extra profiles (they share settings and keybindings)
-# Safe to re-run. Anything it replaces goes to ~/vscode-backups/<timestamp>/ first.
+# Safe to re-run. Anything it replaces goes to ~/Documents/Backups/vscode-setup/<timestamp>/ first.
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP="/Applications/Visual Studio Code.app"
 USER_DIR="$HOME/Library/Application Support/Code/User"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-BACKUP="$HOME/vscode-backups/$STAMP"
+BACKUP="$HOME/Documents/Backups/vscode-setup/$STAMP"
 FRESH=0
 PROFILES=""
 

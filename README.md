@@ -13,7 +13,7 @@ Teljesen tiszta újrakezdéshez (ez mindent töröl, de előtte elment):
 ./install.sh --fresh
 ```
 
-Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS Code `User` mappájába, így a repó az egyetlen forrás: amit a felületen átállítasz, az itt jelenik meg diffként. A bővítményeket a lista alapján szinkronizálja, vagyis telepíti, ami hiányzik, és eltávolítja, ami nincs a listán. Amit felülír, azt előtte a `~/vscode-backups/<időbélyeg>/` mappába menti. Bármikor újrafuttatható.
+Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS Code `User` mappájába, így a repó az egyetlen forrás: amit a felületen átállítasz, az itt jelenik meg diffként. A bővítményeket a lista alapján szinkronizálja, vagyis telepíti, ami hiányzik, és eltávolítja, ami nincs a listán. Amit felülír, azt előtte a `~/Documents/Backups/vscode-setup/<időbélyeg>/` mappába menti. Bármikor újrafuttatható.
 
 ## Filozófia
 
