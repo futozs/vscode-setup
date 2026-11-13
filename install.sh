@@ -39,10 +39,12 @@ if [ "$FRESH" = 1 ]; then
   if [ -x "$APP/Contents/Resources/app/bin/code" ]; then
     "$APP/Contents/Resources/app/bin/code" --list-extensions --show-versions > "$BACKUP/extensions.txt" 2>/dev/null || true
   fi
-  # User settings, keybindings, snippets, profiles, MCP config. Skips the large caches.
+  # User settings, keybindings, snippets, profiles, MCP config, plus Backups (unsaved editors from
+  # hot exit). Skips the large caches.
   if [ -d "$USER_DIR" ]; then
+    parts=(User); [ -d "$USER_DIR/../Backups" ] && parts+=(Backups)
     tar -czf "$BACKUP/user.tar.gz" -C "$USER_DIR/.." \
-      --exclude 'User/workspaceStorage' --exclude 'User/History' --exclude 'User/globalStorage/*/*cache*' User
+      --exclude 'User/workspaceStorage' --exclude 'User/History' --exclude 'User/globalStorage/*/*cache*' "${parts[@]}"
   fi
   echo "   $(du -sh "$BACKUP" | cut -f1) saved"
 
@@ -60,16 +62,17 @@ if [ "$FRESH" = 1 ]; then
          "$HOME/Library/Saved Application State/com.microsoft.VSCode.savedState"
 fi
 
-if [ ! -d "$APP" ]; then
-  say "Installing VS Code"
-  brew install --cask visual-studio-code
-fi
-
 # The `code-cli` formula ships a different `code` binary (tunnels only) that shadows the editor's CLI.
 if brew list --formula code-cli >/dev/null 2>&1; then
   say "Removing the code-cli formula that shadows the real 'code' command"
   brew uninstall code-cli
 fi
+
+if [ ! -d "$APP" ]; then
+  say "Installing VS Code"
+  brew install --cask visual-studio-code
+fi
+
 CODE="$APP/Contents/Resources/app/bin/code"
 if [ ! -e /opt/homebrew/bin/code ] && [ -d /opt/homebrew/bin ]; then
   ln -s "$CODE" /opt/homebrew/bin/code
@@ -100,12 +103,12 @@ sync_extensions() { # sync_extensions <profile-or-empty> <list...>
   local profile="$1"; shift
   local want; want="$(for l in "$@"; do read_list "$l"; done | sort -u)"
   local args=(); [ -n "$profile" ] && args=(--profile "$profile")
-  local have; have="$("$CODE" "${args[@]}" --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u)"
+  local have; have="$("$CODE" ${args[@]+"${args[@]}"} --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u)"
   for ext in $(comm -13 <(echo "$have") <(echo "$want")); do
-    "$CODE" "${args[@]}" --install-extension "$ext" --force >/dev/null && echo "   + $ext" || warn "failed: $ext"
+    "$CODE" ${args[@]+"${args[@]}"} --install-extension "$ext" --force >/dev/null && echo "   + $ext" || warn "failed: $ext"
   done
   for ext in $(comm -23 <(echo "$have") <(echo "$want")); do
-    "$CODE" "${args[@]}" --uninstall-extension "$ext" >/dev/null && echo "   - $ext" || warn "could not remove: $ext"
+    "$CODE" ${args[@]+"${args[@]}"} --uninstall-extension "$ext" >/dev/null && echo "   - $ext" || warn "could not remove: $ext"
   done
 }
 
@@ -113,28 +116,37 @@ say "Extensions (Default profile)"
 sync_extensions "" core
 
 if [ -n "$PROFILES" ]; then
+  # The CLI can't create profiles, so register them in VS Code's state file. Each one shares the
+  # Default profile's settings, keybindings, snippets, tasks and MCP config; only extensions differ.
+  if vscode_running; then echo "Quit VS Code first (Cmd+Q) to create profiles, then re-run."; exit 1; fi
+  names=()
   for p in ${PROFILES//,/ }; do
     [ -f "$REPO/extensions/$p.txt" ] || { warn "no extensions/$p.txt, skipping"; continue; }
-    name="$(echo "${p:0:1}" | tr '[:lower:]' '[:upper:]')${p:1}"
+    names+=("$(sed -n '1s/^# "\([^"]*\)".*/\1/p' "$REPO/extensions/$p.txt")")
+  done
+  python3 - "$USER_DIR" "${names[@]}" <<'PY'
+import json, os, sys, uuid
+user_dir, names = sys.argv[1], sys.argv[2:]
+path = os.path.join(user_dir, "globalStorage", "storage.json")
+os.makedirs(os.path.dirname(path), exist_ok=True)
+data = json.load(open(path)) if os.path.exists(path) else {}
+profiles = data.setdefault("userDataProfiles", [])
+shared = {"settings": True, "keybindings": True, "snippets": True, "tasks": True, "mcp": True}
+for name in names:
+    prof = next((p for p in profiles if p["name"] == name), None)
+    if prof is None:
+        prof = {"location": uuid.uuid4().hex[:8], "name": name}
+        profiles.append(prof)
+    prof["useDefaultFlags"] = shared
+    os.makedirs(os.path.join(user_dir, "profiles", prof["location"]), exist_ok=True)
+json.dump(data, open(path, "w"), indent=2)
+PY
+  for p in ${PROFILES//,/ }; do
+    [ -f "$REPO/extensions/$p.txt" ] || continue
+    name="$(sed -n '1s/^# "\([^"]*\)".*/\1/p' "$REPO/extensions/$p.txt")"
     say "Extensions (profile: $name)"
     sync_extensions "$name" core "$p"
   done
-  # Make the extra profiles reuse the Default profile's settings, keybindings, snippets and tasks.
-  STORAGE="$USER_DIR/globalStorage/storage.json"
-  if [ -f "$STORAGE" ] && ! vscode_running; then
-    python3 - "$STORAGE" <<'PY'
-import json, sys
-path = sys.argv[1]
-data = json.load(open(path))
-for prof in data.get("userDataProfiles", []):
-    if not prof.get("location", "").startswith("builtin"):
-        prof["useDefaultFlags"] = {"settings": True, "keybindings": True, "snippets": True, "tasks": True, "mcp": True}
-json.dump(data, open(path, "w"), indent=2)
-PY
-    echo "   profiles share Default settings"
-  else
-    warn "VS Code is running: set the extra profiles to use Default settings in Profiles editor, or re-run with it closed"
-  fi
 fi
 
 say "Shell helpers"

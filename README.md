@@ -1,6 +1,6 @@
 # vscode-setup
 
-Saját VS Code beállításom macOS-re. Kevés bővítmény, gyors indulás, Copilot helyett Claude Code, és egy téma, amitől estére sem fáj a szemem. Egy paranccsal visszaállítható bármelyik Macen.
+Saját VS Code beállításom macOS-re. Kevés bővítmény, gyors indulás, a Copilotból csak a kódkiegészítés marad, beszélgetni a Claude Code-dal lehet, és a téma estére sem bántja a szemet. Egy paranccsal visszaállítható bármelyik Macen.
 
 ```bash
 git clone https://github.com/futozs/vscode-setup.git ~/Developer/personal/vscode-setup
@@ -18,7 +18,7 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 ## Filozófia
 
 1. **Minden bővítmény lassít.** Csak az kerül be, ami a napi munkában tényleg dolgozik. Amit a VS Code már magától tud, az nem kell: az auto rename tag helyett ott a `linkedEditing`, az indent-rainbow helyett a bracket pair guide-ok, a GitLens helyett a beépített git blame és a Source Control gráf, a Project Manager helyett a `Ctrl+R` és a `pc` parancs.
-2. **Egy AI, nem kettő.** A beépített Copilot (chat, inline javaslatok, next edit) a `chat.disableAIFeatures` beállítással ki van kapcsolva. Az AI-t a Claude Code adja.
+2. **Egy asszisztens, akivel beszélsz.** A VS Code-ba épített Copilotból csak az marad, ami gépelés közben segít: a szürke kódkiegészítés és a next edit javaslat. A Copilot chatje, az agent mód és a címsorban lévő agent-gomb ki van kapcsolva. Beszélgetni, tervezni és nagyobb változtatást végezni a Claude Code-dal lehet.
 3. **A watcher a szűk keresztmetszet.** Nagy JS repóknál a fájlfigyelő eszi a CPU-t. A `node_modules`, a `.next`, a build mappák és a `.claude/worktrees` ki vannak zárva a figyelésből és a keresésből.
 4. **A projekt dönt a formázásról.** A Prettier csak akkor formáz, ha a repóban van Prettier config (`prettier.requireConfig`). Így egy csapatrepóban nem formázod át mások fájljait.
 5. **Nehéz dolgok külön profilban.** A Java/Kotlin language serverek külön profilba kerültek, a webes munkát nem lassítják.
@@ -37,7 +37,7 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 
 | Mire | Mi |
 |---|---|
-| AI | Claude Code |
+| AI | Claude Code; mellette a beépített Copilot, csak kódkiegészítésre (GitHub-bejelentkezés kell hozzá) |
 | Téma | Catppuccin (Mocha sötét, Latte világos, a macOS-hez igazodva vált), Catppuccin ikonok |
 | TypeScript | TypeScript 7 natív language service (`js/ts.experimental.useTsgo`), kb. tízszer gyorsabb, mint a régi tsserver |
 | Lint, formázás | ESLint, Prettier |

@@ -1,7 +1,17 @@
 {
-  // ---------- AI: Claude Code only ----------
-  // Hides the built-in Copilot chat, inline completions and next-edit suggestions.
-  "chat.disableAIFeatures": true,
+  // ---------- AI: Copilot for completions, Claude Code for everything else ----------
+  // Copilot is built into VS Code. Keep its ghost-text completions and next-edit suggestions,
+  // hide its chat and agent UI so Claude Code is the only assistant you talk to.
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "chat.agent.enabled": false,
+  "chat.agentsControl.enabled": "hidden",
   "claudeCode.preferredLocation": "panel",
   "claudeCode.hideOnboarding": true,
   "claudeCode.enableNewConversationShortcut": true,
@@ -217,7 +227,7 @@
   "telemetry.telemetryLevel": "off",
   "update.showReleaseNotes": false,
   "extensions.ignoreRecommendations": false,
-  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "extensions.autoUpdate": "on",
   "npm.autoDetect": "off",
   "js/ts.tsc.autoDetect": "off",
   "workbench.browser.openLocalhostLinks": false,
