@@ -1,0 +1,12 @@
+[
+  // Newline instead of submit in the Claude Code CLI running in the integrated terminal.
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u001b\r" },
+    "when": "terminalFocus"
+  },
+  { "key": "shift+cmd+r", "command": "workbench.action.reloadWindow" },
+  { "key": "alt+cmd+w", "command": "workbench.action.closeOtherEditors" },
+  { "key": "alt+cmd+o", "command": "workbench.action.openRecent" }
+]

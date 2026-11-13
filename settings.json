@@ -1,0 +1,227 @@
+{
+  // ---------- AI: Claude Code only ----------
+  // Hides the built-in Copilot chat, inline completions and next-edit suggestions.
+  "chat.disableAIFeatures": true,
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.hideOnboarding": true,
+  "claudeCode.enableNewConversationShortcut": true,
+
+  // ---------- Look ----------
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
+  "workbench.preferredLightColorTheme": "Catppuccin Latte",
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "workbench.iconTheme": "catppuccin-mocha",
+  "catppuccin.accentColor": "mauve",
+  "catppuccin-icons.hidesExplorerArrows": false,
+
+  "editor.fontFamily": "'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', Menlo, monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.65,
+  "editor.letterSpacing": 0.2,
+  "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono', 'FiraCode Nerd Font Mono', monospace",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.lineHeight": 1.2,
+
+  // ---------- Layout ----------
+  "workbench.activityBar.location": "top",
+  "workbench.sideBar.location": "right",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.layoutControl.enabled": false,
+  "workbench.tree.indent": 14,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.labelFormat": "short",
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 10,
+  "workbench.editor.limit.perEditorGroup": true,
+  "workbench.editor.empty.hint": "hidden",
+  "window.commandCenter": true,
+  "window.title": "${rootName}${separator}${activeEditorShort}",
+  "window.restoreWindows": "preserve",
+  "breadcrumbs.enabled": true,
+
+  // ---------- Editor ----------
+  "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": true,
+  "editor.stickyScroll.maxLineCount": 4,
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "editor.renderLineHighlight": "all",
+  "editor.renderWhitespace": "trailing",
+  "editor.guides.bracketPairs": "active",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.mouseWheelZoom": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "editor.suggest.preview": true,
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": true,
+  "editor.wordWrap": "off",
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "editor.accessibilitySupport": "off",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": true,
+  "diffEditor.experimental.showMoves": true,
+
+  // ---------- Formatting ----------
+  // Format with the project's own tooling only; requireConfig stops Prettier
+  // from reformatting repos that have no Prettier config (teammates' diffs stay clean).
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnPaste": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.useFlatConfig": true,
+  "[jsonc]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "[php]": { "editor.defaultFormatter": "bmewburn.vscode-intelephense-client" },
+  "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" },
+  "[markdown]": { "editor.wordWrap": "on", "files.trimTrailingWhitespace": false },
+
+  // ---------- Files ----------
+  // onFocusChange: dev servers rebuild once when you leave the file, not on every pause while typing.
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.associations": {
+    "*.css": "tailwindcss",
+    ".env*": "dotenv"
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true
+  },
+  // The watcher is the #1 cause of a slow VS Code on large JS repos.
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.nuxt/**": true,
+    "**/.output/**": true,
+    "**/.turbo/**": true,
+    "**/.vercel/**": true,
+    "**/.wrangler/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/test-results/**": true,
+    "**/playwright-report/**": true,
+    "**/.claude/worktrees/**": true,
+    "**/vendor/**": true,
+    "**/.gradle/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.nuxt": true,
+    "**/.output": true,
+    "**/.turbo": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/*.lock": true,
+    "**/bun.lock": true,
+    "**/package-lock.json": true,
+    "**/pnpm-lock.yaml": true,
+    "**/.claude/worktrees": true,
+    "**/vendor": true
+  },
+  "search.followSymlinks": false,
+  "search.smartCase": true,
+
+  // ---------- Explorer ----------
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
+  "explorer.confirmDelete": true,
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "type",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, bun.lock, bun.lockb, pnpm-lock.yaml, pnpm-workspace.yaml, yarn.lock, .npmrc, .nvmrc, .node-version, bunfig.toml",
+    "tsconfig.json": "tsconfig.*.json, next-env.d.ts, *.tsbuildinfo",
+    "next.config.*": "middleware.ts, proxy.ts, instrumentation.ts, instrumentation-client.ts",
+    "eslint.config.*": ".prettierrc*, prettier.config.*, .prettierignore, biome.json, biome.jsonc, .editorconfig",
+    "vitest.config.*": "playwright.config.*, vitest.setup.*",
+    ".env": ".env.*, env.d.ts",
+    "README.md": "AGENTS.md, CLAUDE.md, LICENSE*, CHANGELOG*, CONTRIBUTING*",
+    "Dockerfile": "docker-compose*.yml, compose*.yml, .dockerignore",
+    "*.ts": "${capture}.test.ts, ${capture}.spec.ts",
+    "*.tsx": "${capture}.test.tsx, ${capture}.spec.tsx, ${capture}.stories.tsx"
+  },
+
+  // ---------- TypeScript (TS 7 native language service) ----------
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.tsdk.promptToUseWorkspaceVersion": false,
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "js/ts.updateImportsOnPaste.enabled": true,
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.tsserver.maxMemory": 8192,
+  "js/ts.inlayHints.parameterNames.enabled": "literals",
+  "js/ts.inlayHints.functionLikeReturnTypes.enabled": true,
+
+  // ---------- Tailwind ----------
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "css.lint.unknownAtRules": "ignore",
+
+  // ---------- Errors ----------
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+  "errorLens.delay": 400,
+  "errorLens.excludeBySource": ["cSpell"],
+
+  // ---------- Git ----------
+  "git.autofetch": true,
+  "git.autofetchPeriod": 300,
+  "git.pruneOnFetch": true,
+  "git.autoStash": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.smartCommitChanges": "all",
+  "git.rebaseWhenSync": true,
+  "git.ignoreRebaseWarning": true,
+  "git.openRepositoryInParentFolders": "never",
+  "git.detectWorktrees": true,
+  "git.blame.statusBarItem.enabled": true,
+  "git.blame.editorDecoration.enabled": false,
+  "git.mergeEditor": true,
+  "git.defaultBranchName": "main",
+  "scm.defaultViewMode": "tree",
+  "scm.graph.showIncomingChanges": true,
+  "scm.graph.showOutgoingChanges": true,
+
+  // ---------- Terminal ----------
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.stickyScroll.enabled": true,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.enablePersistentSessions": true,
+  "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.macOptionIsMeta": true,
+
+  // ---------- Quiet + fast ----------
+  "telemetry.telemetryLevel": "off",
+  "update.showReleaseNotes": false,
+  "extensions.ignoreRecommendations": false,
+  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "npm.autoDetect": "off",
+  "js/ts.tsc.autoDetect": "off",
+  "workbench.browser.openLocalhostLinks": false,
+  "workbench.settings.editor": "json",
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "redhat.telemetry.enabled": false
+}

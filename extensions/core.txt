@@ -1,0 +1,32 @@
+# Default profile: web stack (Next.js, React, TS, Tailwind, Prisma, Bun, Vue/Nuxt).
+# One extension per line. Comments and blank lines are ignored.
+
+# AI
+anthropic.claude-code
+
+# Look
+catppuccin.catppuccin-vsc
+catppuccin.catppuccin-vsc-icons
+
+# Language + framework
+typescriptteam.native-preview
+dbaeumer.vscode-eslint
+esbenp.prettier-vscode
+bradlc.vscode-tailwindcss
+prisma.prisma
+oven.bun-vscode
+vue.volar
+redhat.vscode-yaml
+tamasfe.even-better-toml
+mikestead.dotenv
+
+# Errors where you look
+usernamehw.errorlens
+yoavbls.pretty-ts-errors
+
+# Tests
+vitest.explorer
+ms-playwright.playwright
+
+# CI
+github.vscode-github-actions
