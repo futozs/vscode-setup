@@ -109,6 +109,8 @@
     "emmet.triggerExpansionOnTab": true,
     "editor.defaultFormatter": "vscode.html-language-features"
   },
+  // C#: no "N references" lines above every member. Find references stays on Shift+F12.
+  "dotnet.codeLens.enableReferencesCodeLens": false,
   // Emmet expansions sit at the top of the suggestion list instead of under word matches.
   "emmet.showSuggestionsAsSnippets": true,
   "editor.snippetSuggestions": "top",
