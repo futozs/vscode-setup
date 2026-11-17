@@ -99,12 +99,18 @@ link keybindings.json "$USER_DIR/keybindings.json"
 
 read_list() { sed -e 's/#.*//' -e 's/[[:space:]]//g' "$REPO/extensions/$1.txt" | grep -v '^$' | tr '[:upper:]' '[:lower:]'; }
 
-# The Projects sidebar is not on the Marketplace: build it from source on every run.
-LOCAL_EXT="futozs.dev-projects"
-LOCAL_VSIX="$(mktemp -d)/dev-projects.vsix"
-say "Building the Projects extension"
-(cd "$REPO/projects-extension" && npx --yes @vscode/vsce@4.1.1 package --no-dependencies -o "$LOCAL_VSIX" >/dev/null 2>&1) \
-  && echo "   built $(basename "$LOCAL_VSIX")" || warn "could not build projects-extension (needs node)"
+# Local extensions (./*-extension) are not on the Marketplace: build each from source on every run.
+LOCAL_DIR="$(mktemp -d)"
+LOCAL_IDS=""
+say "Building local extensions"
+for dir in "$REPO"/*-extension; do
+  id="$(cd "$dir" && node -p 'const p=require("./package.json"); (p.publisher+"."+p.name).toLowerCase()')" || continue
+  if (cd "$dir" && npx --yes @vscode/vsce@4.1.1 package --no-dependencies -o "$LOCAL_DIR/$id.vsix" >/dev/null 2>&1); then
+    LOCAL_IDS="$LOCAL_IDS $id"; echo "   built $id"
+  else
+    warn "could not build $(basename "$dir") (needs node)"
+  fi
+done
 
 sync_extensions() { # sync_extensions <profile-or-empty> <list...>
   local profile="$1"; shift
@@ -112,12 +118,13 @@ sync_extensions() { # sync_extensions <profile-or-empty> <list...>
   local args=(); [ -n "$profile" ] && args=(--profile "$profile")
   local have; have="$("$CODE" ${args[@]+"${args[@]}"} --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' | sort -u)"
   for ext in $(comm -13 <(echo "$have") <(echo "$want")); do
-    [ "$ext" = "$LOCAL_EXT" ] && continue
+    [ -f "$LOCAL_DIR/$ext.vsix" ] && continue
     "$CODE" ${args[@]+"${args[@]}"} --install-extension "$ext" --force >/dev/null && echo "   + $ext" || warn "failed: $ext"
   done
-  if [ -f "$LOCAL_VSIX" ] && echo "$want" | grep -qx "$LOCAL_EXT"; then
-    "$CODE" ${args[@]+"${args[@]}"} --install-extension "$LOCAL_VSIX" --force >/dev/null 2>&1 || warn "failed: $LOCAL_EXT"
-  fi
+  for id in $LOCAL_IDS; do
+    echo "$want" | grep -qx "$id" || continue
+    "$CODE" ${args[@]+"${args[@]}"} --install-extension "$LOCAL_DIR/$id.vsix" --force >/dev/null 2>&1 || warn "failed: $id"
+  done
   for ext in $(comm -23 <(echo "$have") <(echo "$want")); do
     "$CODE" ${args[@]+"${args[@]}"} --uninstall-extension "$ext" >/dev/null && echo "   - $ext" || warn "could not remove: $ext"
   done

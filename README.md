@@ -31,7 +31,7 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | `keybindings.json` | Kevés, de használt billentyű (lent). |
 | `extensions/core.txt` | Az alap profil bővítményei. |
 | `extensions/php.txt`, `android.txt`, `csharp.txt` | Extra profilok: `./install.sh --profiles php,android,csharp`. A beállításokat és a billentyűket az alap profillal közösen használják. Egy mappához egyszer hozzárendelve (`code --profile "C#" <mappa>`) onnantól magától abban a profilban nyílik. |
-| `projects-extension/` | A saját Projects bővítmény forrása. Az installer minden futáskor újraépíti és telepíti. |
+| `projects-extension/`, `run-extension/` | A két saját bővítmény (Projects, Run Current File) forrása. Az installer minden futáskor újraépíti és telepíti a `*-extension` mappákat. |
 | `shell/dev.zsh` | `p`, `pc`, `c` parancsok és zoxide. Az installer a `~/.zshrc`-ből hivatkozik rá. |
 
 ### Bővítmények
@@ -50,6 +50,19 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | Swift | Swift, LLDB |
 | Nézegetők | PDF, SVG (előnézet és szerkesztés), Draw.io, Rainbow CSV |
 | Projektek | Projects (saját, lent) |
+
+### Run Current File
+
+Egy debug-konfiguráció, ami a nyitott fájl típusa szerint indítja el a `launch.json` megfelelő bejegyzését. Így az F5 és a Run and Debug ▶ gombja is mindig a jót futtatja, nem kell a legördülőben váltogatni.
+
+```jsonc
+// .vscode/launch.json — ez legyen az első, így ez az alapértelmezett
+{ "name": "Aktuális fájl", "type": "current-file", "request": "launch" },
+{ "name": "C#", "type": "coreclr", ... },
+{ "name": "JS (Bun)", "type": "bun", ... }
+```
+
+A fájltípus → konfiguráció párosítás a `runCurrentFile.byExtension` beállításban van (alapból `.cs` → „C#”, `.js`/`.mjs`/`.ts` → „JS (Bun)”). A kiválasztott konfiguráció a saját debuggerével és `preLaunchTask`-jával fut.
 
 ### Projects
 

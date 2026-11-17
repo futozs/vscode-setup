@@ -1,0 +1,51 @@
+{
+  "name": "run-current-file",
+  "displayName": "Run Current File",
+  "description": "One debug configuration that starts the launch.json entry matching the open file's type, so F5 and the Run button do the right thing for .cs, .js and .ts.",
+  "version": "1.0.0",
+  "publisher": "futozs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futozs/vscode-setup"
+  },
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": ["Debuggers"],
+  "main": "./extension.js",
+  "activationEvents": ["onDebugResolve:current-file"],
+  "extensionKind": ["ui"],
+  "contributes": {
+    "debuggers": [
+      {
+        "type": "current-file",
+        "label": "Current file (by file type)",
+        "configurationAttributes": {
+          "launch": {
+            "properties": {}
+          }
+        },
+        "initialConfigurations": [
+          { "name": "Aktuális fájl", "type": "current-file", "request": "launch" }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "Run Current File",
+      "properties": {
+        "runCurrentFile.byExtension": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "default": {
+            ".cs": "C#",
+            ".js": "JS (Bun)",
+            ".mjs": "JS (Bun)",
+            ".ts": "JS (Bun)"
+          },
+          "description": "File extension -> name of the launch.json configuration to start."
+        }
+      }
+    }
+  }
+}

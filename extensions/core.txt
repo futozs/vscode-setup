@@ -48,5 +48,6 @@ jock.svg
 hediet.vscode-drawio
 mechatroner.rainbow-csv
 
-# Local: built from ./projects-extension by install.sh
+# Local: built from ./*-extension by install.sh
 futozs.dev-projects
+futozs.run-current-file
