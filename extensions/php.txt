@@ -1,4 +1,4 @@
 # "PHP" profile: plain PHP sites and HTML emails.
 bmewburn.vscode-intelephense-client
 mjmlio.vscode-mjml
-ms-vscode.live-server
+yandeu.five-server

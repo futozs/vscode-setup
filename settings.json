@@ -92,7 +92,8 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[php]": {
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "emmet.triggerExpansionOnTab": true
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
@@ -101,9 +102,26 @@
     "editor.wordWrap": "on",
     "files.trimTrailingWhitespace": false
   },
-  // ---------- Files ----------
-  // onFocusChange: dev servers rebuild once when you leave the file, not on every pause while typing.
-  "files.autoSave": "onFocusChange",
+  // ---------- HTML + Emmet ----------
+  // Type an abbreviation without "<" (script, div.card, ul>li*3, !) and press Tab.
+  // Tab expansion only in markup files: in JS/TSX a Tab after a word would turn it into a tag.
+  "[html]": {
+    "emmet.triggerExpansionOnTab": true,
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  // Emmet expansions sit at the top of the suggestion list instead of under word matches.
+  "emmet.showSuggestionsAsSnippets": true,
+  "editor.snippetSuggestions": "top",
+  "html.autoClosingTags": true,
+  "html.completion.attributeDefaultValue": "doublequotes",
+  "html.format.wrapAttributes": "auto",
+  "html.format.indentInnerHtml": true,
+  // Live preview: Cmd+L Cmd+O starts it on the open file, Cmd+L Cmd+C stops it.
+  // navigate: the browser follows whichever HTML file is active, so one server covers every exercise folder.
+  "fiveServer.navigate": true,
+  "fiveServer.highlight": true,
+  "fiveServer.browser": ["Helium"],
+  "fiveServer.php.executable": "/opt/homebrew/bin/php",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
@@ -246,5 +264,6 @@
   "security.workspace.trust.enabled": false,
   "redhat.telemetry.enabled": false,
   "chat.viewSessions.enabled": false,
-  "chat.contextUsage.enabled": false
+  "chat.contextUsage.enabled": false,
+  "files.autoSave": "afterDelay"
 }

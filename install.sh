@@ -97,7 +97,7 @@ mkdir -p "$USER_DIR"
 link settings.json "$USER_DIR/settings.json"
 link keybindings.json "$USER_DIR/keybindings.json"
 
-read_list() { grep -v '^\s*#' "$REPO/extensions/$1.txt" | grep -v '^\s*$' | tr '[:upper:]' '[:lower:]'; }
+read_list() { sed -e 's/#.*//' -e 's/[[:space:]]//g' "$REPO/extensions/$1.txt" | grep -v '^$' | tr '[:upper:]' '[:lower:]'; }
 
 # The Projects sidebar is not on the Marketplace: build it from source on every run.
 LOCAL_EXT="futozs.dev-projects"

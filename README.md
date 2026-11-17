@@ -46,6 +46,8 @@ Az `install.sh` symlinkeli a `settings.json`-t és a `keybindings.json`-t a VS C
 | Hibák | Error Lens (a hiba a sor végén jelenik meg), Pretty TypeScript Errors |
 | Tesztek | Vitest, Playwright |
 | CI, konténerek | GitHub Actions, Container Tools (Dockerfile, compose) |
+| Sima HTML/CSS/JS | HTML CSS Support (a `class=""` mezőben felajánlja a CSS-fájlod osztályait), HTMLHint, JavaScript (ES6) snippets, Five Server (élő előnézet, PHP-t is futtat) |
+| Swift | Swift, LLDB |
 | Nézegetők | PDF, SVG (előnézet és szerkesztés), Draw.io, Rainbow CSV |
 | Projektek | Projects (saját, lent) |
 
@@ -73,6 +75,8 @@ A Project Manager helyett. Nem a Marketplace-ről jön, hanem a `projects-extens
 |---|---|
 | `Cmd+Esc` | Claude Code fókusz (a bővítmény alapértelmezése) |
 | `Alt+Cmd+P` | Projektváltó (az összes projekt a `~/Developer`-ben) |
+| `script` + `Tab` (HTML-ben) | Emmet: `<script></script>`. Ugyanígy a `div.card`, az `ul>li*3`, vagy a `!` egy teljes HTML-vázért. A Tab-os kibontás csak HTML-ben és PHP-ben él, JS/TSX-ben nem, mert ott egy szó után a Tab tagot csinálna a szóból. |
+| `Cmd+L Cmd+O` / `Cmd+L Cmd+C` | Five Server indítása az épp nyitott HTML-fájlon / leállítása. A böngésző követi, melyik fájl aktív, és a Heliumban nyílik. |
 | `Ctrl+R` / `Alt+Cmd+O` | Legutóbbi projektek |
 | `Shift+Cmd+R` | Ablak újratöltése, ha egy bővítmény beakad |
 | `Alt+Cmd+W` | A többi fül bezárása |

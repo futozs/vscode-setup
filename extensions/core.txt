@@ -20,6 +20,16 @@ redhat.vscode-yaml
 tamasfe.even-better-toml
 mikestead.dotenv
 
+# Plain HTML / CSS / JS
+ecmel.vscode-html-css          # class/id completion from your stylesheets
+htmlhint.vscode-htmlhint       # flags unclosed or invalid tags
+xabikos.javascriptsnippets     # clg -> console.log, imp -> import, afn -> arrow fn
+yandeu.five-server             # live reload preview (also renders PHP)
+
+# Swift
+swiftlang.swift-vscode
+llvm-vs-code-extensions.lldb-dap
+
 # Errors where you look
 usernamehw.errorlens
 yoavbls.pretty-ts-errors
